@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="{%static 'css/list2.css' %}" rel="stylesheet">
+    <title>Phone Numbers</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+<h2>
+    WELCOME <b> {{user.username|upper}}</b><br><br>
+    {% if user.is_superuser %}
+    | <a class="dropdown-item" href="{%url 'phone_number'%}">HOME</a> |
+    <a class="dropdown-item" href="{%url 'admin:index'%}">ADMIN PANEL</a> |
+    <a class="dropdown-item" href="{%url 'user_data_count'%}">USER DATA COUNT</a> |
+
+    {% endif %}
+
+    <a href="{%url 'logout'%}">LOGOUT</a> |
+    {%else%}
+    <a href="{%url 'login'%}">LOGIN</a> |
+    <a href="{%url 'register'%}">REGISTER</a> |
+</h2>
+    {%endif%}
+
+    {% if user.is_superuser %}
+    <h2>Phone Numbers</h2>
+
+    <form method="get">
+        <button type="submit" name="download">Download Excel</button>
+    </form>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>School</th>
+            <th>Phone Number</th>
+            <th>Comments</th>
+            <th>User</th>
+            <th>Date & Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for phone_number in phone_numbers %}
+        <tr>
+            <td>{{ phone_number.student_name }}</td>
+            <td>{{ phone_number.email }}</td>
+            <td>{{ phone_number.school }}</td>
+            <td>{{ phone_number.number }}</td>
+            <td>{{ phone_number.comments }}</td>
+            <td>{{ phone_number.user }}</td>
+            <td>{{ phone_number.created_at}}</td>
+        </tr>
+        {% endfor %}
+        <tbody>
+    </table>
+</div>
+{%endif%}
+</body>
+</html>

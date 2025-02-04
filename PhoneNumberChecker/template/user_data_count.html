@@ -1,0 +1,49 @@
+ {% load static %}
+ <!DOCTYPE html>
+<html>
+<head>
+
+        <link href="{%static 'css/list2.css' %}" rel="stylesheet">
+    <title>User Count</title>
+
+</head>
+<body>
+{% if user.is_authenticated %}
+<h2>
+    WELCOME <b> {{user.username|upper}}</b><br><br>
+    {% if user.is_superuser %}
+    | <a class="dropdown-item" href="{%url 'phone_number'%}">HOME</a> |
+    <a class="dropdown-item" href="{%url 'admin:index'%}">ADMIN PANEL</a> |
+    <a class="dropdown-item" href="{%url 'phone_number_list'%}">LIST</a> |
+
+    {% endif %}
+
+    <a href="{%url 'logout'%}">LOGOUT</a> |
+    {%else%}
+    <a href="{%url 'login'%}">LOGIN</a> |
+    <a href="{%url 'register'%}">REGISTER</a> |
+
+    {%endif%}</h2>
+    {% if user.is_superuser %}
+    <h2>Data Entry Counts by User</h2>
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Number of Entries</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in user_data_counts %}
+        <tr>
+            <td>{{ entry.user }}</td>
+            <td>{{ entry.count }}</td>
+        </tr>
+        {% endfor %}
+        <tbody>
+    </table>
+</div>
+{%endif%}
+</body>
+</html>
